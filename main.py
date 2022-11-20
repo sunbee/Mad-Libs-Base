@@ -43,10 +43,51 @@ madlibsDB['furry_scaly_pets']['miscellanies'] = ['astronaut', 'cake', 'car', 'dr
 async def root():
     return HTMLResponse("<h2>Marvellous Mavericks Make Methodical Mad-Libs</h2>")
 
-@app.get('/item/{item_ID}')
-async def getItem(item_ID: int, q: str = None):
-    return {"item": item_ID, "q": q}
+@app.get('/madlibs/{name}')
+async def getMadLib(name: str, q: List[str] = Query(default=[])):
+    payload = dict()
+    madlib = madlibsDB.get(name, None)
+    if madlib:
+        payload['title'] = madlib['title']
+        payload['HTML'] = madlib['HTML']
+    if q:
+        for key in q:
+            if key in ['adjectives', 'nouns', 'verbs', 'miscellanies']:
+                payload[key] = madlib[key]
+    
+    return payload
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 @app.get('/madlib/{name}')
 async def getMadLib(name: str, q: List[str] = Query(default=[])):
     payload = dict()
@@ -62,3 +103,4 @@ async def getMadLib(name: str, q: List[str] = Query(default=[])):
                 payload[key] = madlib[key] 
 
     return payload
+'''
