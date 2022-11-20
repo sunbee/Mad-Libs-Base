@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
+from typing import List
+import copy
 
 app = FastAPI()
 
@@ -45,3 +47,18 @@ async def root():
 async def getItem(item_ID: int, q: str = None):
     return {"item": item_ID, "q": q}
 
+@app.get('/madlib/{name}')
+async def getMadLib(name: str, q: List[str] = Query(default=[])):
+    payload = dict()
+    madlib = madlibsDB.get(name, None)
+    if not madlib:
+        return
+    payload['title'] = madlib.get('title')
+    payload['HTML'] = madlib.get('HTML')
+
+    if q:
+        for key in q:
+            if key in ['adjectives', 'nouns', 'verbs', 'miscellanies']:
+                payload[key] = madlib[key] 
+
+    return payload
