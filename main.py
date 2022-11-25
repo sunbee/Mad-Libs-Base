@@ -1,9 +1,12 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 from fastapi.responses import HTMLResponse
 from typing import List
+from fastapi.templating import Jinja2Templates
 import copy
 
 app = FastAPI()
+
+templates = Jinja2Templates(directory='templates')
 
 with open('dino_rhyme.html', 'r') as fd:
     dino_rhyme_html = fd.read()
@@ -56,4 +59,29 @@ async def getMadLib(name: str, q: List[str] = Query(default=[])):
                 payload[key] = madlib[key]
     
     return payload
-    
+
+@app.get('/madlibsgame/{name}')
+async def getMadLibGame(request: Request, name: str):
+    my_mad_lib = madlibsDB.get(name, None)
+    if my_mad_lib:
+        return templates.TemplateResponse('madlib.html', {'request': request, 'my_mad_lib': my_mad_lib.get('HTML')})
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+@app.get('/madlibsgame/{name}')
+async def getMadLibGame(request: Request, name: str):
+    my_mad_lib = madlibsDB.get(name, None)
+    if my_mad_lib:
+        return templates.TemplateResponse('madlib.html', {'request': request, 'my_mad_lib': my_mad_lib.get('HTML')})
+
+'''
