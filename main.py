@@ -64,7 +64,12 @@ async def getMadLib(name: str, q: List[str] = Query(default=[])):
 async def getMadLibGame(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None)
     if my_mad_lib:
-        return templates.TemplateResponse('madlib.html', {'request': request, 'my_mad_lib': my_mad_lib.get('HTML')})
+        return templates.TemplateResponse('madlib.html', {'request': request, 
+                                        'my_mad_lib': my_mad_lib.get('HTML'),
+                                        'adjectives': my_mad_lib.get('adjectives'),
+                                        'nouns': my_mad_lib.get('nouns'),
+                                        'verbs': my_mad_lib.get('verbs'),
+                                        'miscellanies': my_mad_lib.get('miscellanies')})
 
 
 
