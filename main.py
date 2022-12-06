@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, Path, Query, Form, Request
 from fastapi.responses import HTMLResponse
+from fastapi.encoders import jsonable_encoder
 from typing import List
 from fastapi.templating import Jinja2Templates
 import copy
@@ -73,24 +74,16 @@ async def getMadLibGame(request: Request, name: str):
 
 
 
-@app.get('/addmadlibs/')
+@app.get('/madlibsform/')
 async def getForm4CRUD():
     with open('templates/CreateRUD.html', 'r') as fd:
         CreateRUD_HTML = fd.read()
     return HTMLResponse(CreateRUD_HTML);
 
+@app.post('/madlibsadd/')
+async def postFormData(request: Request):
+    form_data = await request.form()
+    form_json = jsonable_encoder(form_data)
+    print(form_json)
+    return form_json
 
-
-
-
-
-
-
-'''
-@app.get('/madlibsgame/{name}')
-async def getMadLibGame(request: Request, name: str):
-    my_mad_lib = madlibsDB.get(name, None)
-    if my_mad_lib:
-        return templates.TemplateResponse('madlib.html', {'request': request, 'my_mad_lib': my_mad_lib.get('HTML')})
-
-'''

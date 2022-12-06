@@ -40,3 +40,10 @@ $('.add').on('click', function() {
     el_me.before(el_input)
     1;
   });
+
+$("textarea").each(function () {
+  this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;width:60%;min-height:180px;");
+}).on("input", function () {
+  this.style.height = 0;
+  this.style.height = (this.scrollHeight) + "px";
+});
