@@ -3,7 +3,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 import copy
+import re
 
 app = FastAPI()
 
@@ -84,6 +86,22 @@ async def getForm4CRUD():
 async def postFormData(request: Request):
     form_data = await request.form()
     form_json = jsonable_encoder(form_data)
-    print(form_json)
+    title = form_json["title"]
+    mad_html = form_json["madlib"]
+
+    all_keys = form_json.keys()
+    adjectives      = [form_json[adjective_key]     for adjective_key   in all_keys if re.match('^adjective',   adjective_key)]
+    nouns           = [form_json[noun_key]          for noun_key        in all_keys if re.match('^noun',        noun_key)]
+    verbs           = [form_json[verb_key]          for verb_key        in all_keys if re.match('^verb',        verb_key)]
+    miscellanies    = [form_json[miscellany_key]    for miscellany_key  in all_keys if re.match('^miscellany',  miscellany_key)]
+    
+    madlibsDB[title] = dict()
+    print(title)
+    print(mad_html)
+    print(adjectives)
+    print(nouns)
+    print(verbs)
+    print(miscellanies)
+
     return form_json
 
