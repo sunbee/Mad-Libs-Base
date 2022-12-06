@@ -73,7 +73,11 @@ async def getMadLibGame(request: Request, name: str):
 
 
 
-
+@app.get('/addmadlibs/')
+async def getForm4CRUD():
+    with open('templates/CreateRUD.html', 'r') as fd:
+        CreateRUD_HTML = fd.read()
+    return HTMLResponse(CreateRUD_HTML);
 
 
 
