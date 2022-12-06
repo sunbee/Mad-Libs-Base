@@ -95,13 +95,16 @@ async def postFormData(request: Request):
     verbs           = [form_json[verb_key]          for verb_key        in all_keys if re.match('^verb',        verb_key)]
     miscellanies    = [form_json[miscellany_key]    for miscellany_key  in all_keys if re.match('^miscellany',  miscellany_key)]
     
-    madlibsDB[title] = dict()
-    print(title)
-    print(mad_html)
-    print(adjectives)
-    print(nouns)
-    print(verbs)
-    print(miscellanies)
+    ''' 
+    Check for empty fields in each list.
+    '''
 
-    return form_json
+    madlibsDB[title] = dict()
+    madlibsDB[title]['HTML'] = mad_html
+    madlibsDB[title]['adjectives']      = adjectives
+    madlibsDB[title]['nouns']           = nouns
+    madlibsDB[title]['verbs']           = verbs
+    madlibsDB[title]['miscellanies']    = miscellanies
+
+    return madlibsDB[title]
 
