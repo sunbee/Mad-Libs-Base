@@ -74,8 +74,6 @@ async def getMadLibGame(request: Request, name: str):
                                         'verbs': my_mad_lib.get('verbs'),
                                         'miscellanies': my_mad_lib.get('miscellanies')})
 
-
-
 @app.get('/madlibsform/')
 async def getForm4CRUD():
     with open('templates/CreateRUD.html', 'r') as fd:
