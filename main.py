@@ -1,11 +1,45 @@
-from fastapi import FastAPI, Path, Query, Form, Request
+from fastapi import FastAPI, Path, Query, Form, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 import copy
+import re
+
+class MadLib(BaseModel):
+    title: str
+    HTML: str
+    adjectives: List[str]
+    nouns: List[str]
+    verbs: List[str]
+    miscellanies: List[str]
 
 app = FastAPI()
+
+async def CRUDForm(request: Request):
+    form_data = await request.form()
+    form_json = jsonable_encoder(form_data)
+    title = form_json["title"]
+    mad_html = form_json["madlib"]
+
+    all_keys = form_json.keys()
+    adjectives      = [form_json[adjective_key]     for adjective_key   in all_keys if re.match('^adjective',   adjective_key)]
+    nouns           = [form_json[noun_key]          for noun_key        in all_keys if re.match('^noun',        noun_key)]
+    verbs           = [form_json[verb_key]          for verb_key        in all_keys if re.match('^verb',        verb_key)]
+    miscellanies    = [form_json[miscellany_key]    for miscellany_key  in all_keys if re.match('^miscellany',  miscellany_key)]
+    
+    madlib = MadLib(
+        title = title,
+        HTML = mad_html,
+        adjectives = adjectives,
+        nouns = nouns,
+        verbs = verbs,
+        miscellanies = miscellanies
+    )
+
+    print(madlib)
+    return madlib
 
 templates = Jinja2Templates(directory='templates')
 
@@ -72,8 +106,6 @@ async def getMadLibGame(request: Request, name: str):
                                         'verbs': my_mad_lib.get('verbs'),
                                         'miscellanies': my_mad_lib.get('miscellanies')})
 
-
-
 @app.get('/madlibsform/')
 async def getForm4CRUD():
     with open('templates/CreateRUD.html', 'r') as fd:
@@ -81,9 +113,14 @@ async def getForm4CRUD():
     return HTMLResponse(CreateRUD_HTML);
 
 @app.post('/madlibsadd/')
-async def postFormData(request: Request):
-    form_data = await request.form()
-    form_json = jsonable_encoder(form_data)
-    print(form_json)
-    return form_json
+async def postFormData(madlib: MadLib = Depends(CRUDForm)):
+    madlibsDB[madlib.title] = dict()
+    madlibsDB[madlib.title]['HTML'] = madlib.HTML
+    madlibsDB[madlib.title]['adjectives']      = madlib.adjectives
+    madlibsDB[madlib.title]['nouns']           = madlib.nouns
+    madlibsDB[madlib.title]['verbs']           = madlib.verbs
+    madlibsDB[madlib.title]['miscellanies']    = madlib.miscellanies
+
+    return madlibsDB[madlib.title]
+
 
