@@ -31,6 +31,7 @@ $('.add').on('click', function() {
     el_input.setAttribute('type', 'text')
     el_input.setAttribute('id', name_input)
     el_input.setAttribute('name', name_input)
+    el_input.required = true
     
     /*
     Insert the new input el before the span el with the plus sign, including a break el for separation.
