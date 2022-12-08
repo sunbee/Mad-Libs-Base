@@ -11,30 +11,30 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     </head>
     <body>
-      <form action="http://localhost:8000/madlibsupate/{{ title }}" method="PUT">
+      <form action="http://localhost:8000/madlibsupdate/{{ title }}" method="POST">
         <div><h3>Mad-Lib Information</h3></div>
         <div>Time: <input type="time" id="timestamp" name="timestamp" /></div><br>
         <div>Date: <input type="date" id="datestamp" name="datestamp" /></div><br>
         <div>Title: <br><input type="text" id="title" name="title" value={{ title }} disabled="disabled"/></div><br>
-        <div>Mad-Lib: <br><textarea placeholder="Type HTML here." id="madlib" name="madlib" value={{ HTML }}></textarea></div><br>
+        <div>Mad-Lib: <br><textarea placeholder="Type HTML here." id="madlib" name="madlib" value={% autoescape false %}{{ HTML }}{% endautoescape %}></textarea></div><br>
         <div>Adjective: 
             {% for adjective in adjectives %}
-                <br><input type="text" id="adjective-{{ loop.index+1 }}" name="adjective-{{ loop.index+1 }}" required/>
-            {% enfor %}
+                <br><input type="text" id="adjective-{{ loop.index+1 }}" name="adjective-{{ loop.index+1 }}"" value="{{ adjective }}" required/>
+            {% endfor %}
             <span class="fa fa-plus add" name="add-adjective"></span></div><br>            
         <div>Noun: 
             {% for noun in nouns %}
-                <br><input type="text" id="noun-{{ loop.index+1 }}" name="noun-{{ loop.index+1 }}" required/>
+                <br><input type="text" id="noun-{{ loop.index+1 }}" name="noun-{{ loop.index+1 }}" value="{{ noun }}" required/>
             {% endfor %}
             <span class="fa fa-plus add" name="add-noun"></span></div><br>
         <div>Verb: 
             {% for verb in verbs %}
-                <br><input type="text" id="verb-{{ loop.index+1 }}" name="verb-{{ loop.index+1 }}" required/>
+                <br><input type="text" id="verb-{{ loop.index+1 }}" name="verb-{{ loop.index+1 }}" value="{{ verb }}" required/>
             {% endfor %}
             <span class="fa fa-plus add" name="add-verb"></span></div><br>
         <div>Misc.: 
             {% for miscellany in miscellanies %}
-                <br><input type="text" id="miscellany={{ loop.index }}" name="miscellany-{{ loop.index }}" required/>
+                <br><input type="text" id="miscellany={{ loop.index }}" name="miscellany-{{ loop.index }}" value="{{ miscellany }}" required/>
             {% endfor %}
             <span class="fa fa-plus add"></span></div><br>
         <div><input type="submit" value="Submit"></div>
