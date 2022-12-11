@@ -116,11 +116,11 @@ async def getForm4CRUD():
 @app.post('/madlibsadd/')
 async def postFormData(madlib: MadLib = Depends(CRUDForm)):
     madlibsDB[madlib.title] = dict()
-    madlibsDB[madlib.title]['HTML'] = madlib.HTML
-    madlibsDB[madlib.title]['adjectives']      = madlib.adjectives
-    madlibsDB[madlib.title]['nouns']           = madlib.nouns
-    madlibsDB[madlib.title]['verbs']           = madlib.verbs
-    madlibsDB[madlib.title]['miscellanies']    = madlib.miscellanies
+    madlibsDB[madlib.title]['HTML']             = madlib.HTML
+    madlibsDB[madlib.title]['adjectives']       = madlib.adjectives
+    madlibsDB[madlib.title]['nouns']            = madlib.nouns
+    madlibsDB[madlib.title]['verbs']            = madlib.verbs
+    madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
 
     return madlibsDB[madlib.title]
 
@@ -141,10 +141,10 @@ async def updateForm4CRUD(request: Request, name: str):
 @app.post('/madlibsupdate/{name}')
 async def putFormData(name: str, madlib: MadLib = Depends(CRUDForm)):
     madlibsDB[madlib.title] = dict()
-    madlibsDB[madlib.title]['HTML'] = madlib.HTML
-    madlibsDB[madlib.title]['adjectives']      = madlib.adjectives
-    madlibsDB[madlib.title]['nouns']           = madlib.nouns
-    madlibsDB[madlib.title]['verbs']           = madlib.verbs
-    madlibsDB[madlib.title]['miscellanies']    = madlib.miscellanies
+    madlibsDB[madlib.title]['HTML']             = madlib.HTML
+    madlibsDB[madlib.title]['adjectives']       = madlib.adjectives
+    madlibsDB[madlib.title]['nouns']            = madlib.nouns
+    madlibsDB[madlib.title]['verbs']            = madlib.verbs
+    madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
 
     return madlibsDB[madlib.title]
