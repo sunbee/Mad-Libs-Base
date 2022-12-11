@@ -16,7 +16,7 @@
         <div>Time: <input type="time" id="timestamp" name="timestamp" /></div><br>
         <div>Date: <input type="date" id="datestamp" name="datestamp" /></div><br>
         <div>Title: <br><input type="text" id="title" name="title" value={{ title }} disabled="disabled"/></div><br>
-        <div>Mad-Lib: <br><textarea placeholder="Type HTML here." id="madlib" name="madlib" value={% autoescape false %}{{ HTML }}{% endautoescape %}></textarea></div><br>
+        <div>Mad-Lib: <br><textarea placeholder="Type HTML here." id="madlib" name="madlib">{{ HTML|safe }}</textarea></div><br>
         <div>Adjective: 
             {% for adjective in adjectives %}
                 <br><input type="text" id="adjective-{{ loop.index+1 }}" name="adjective-{{ loop.index+1 }}"" value="{{ adjective }}" required/>
