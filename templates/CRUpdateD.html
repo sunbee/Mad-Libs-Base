@@ -48,7 +48,7 @@
             {% for miscellany in miscellanies %}
                 <br><input type="text" id="miscellany={{ loop.index }}" name="miscellany-{{ loop.index }}" value="{{ miscellany }}" required/>
                 {% if not loop.last %}
-                    <span class="fa fa-minus del" name="del-miscellany"></span></div><br>
+                    <span class="fa fa-minus del" name="del-miscellany"></span></div>
                 {% else %}
                     <span class="fa fa-plus add" name="add-miscellany"></span></div><br> 
                 {% endif %}
