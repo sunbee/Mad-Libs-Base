@@ -20,21 +20,40 @@
         <div>Adjective: 
             {% for adjective in adjectives %}
                 <br><input type="text" id="adjective-{{ loop.index+1 }}" name="adjective-{{ loop.index+1 }}"" value="{{ adjective }}" required/>
+                {% if not loop.last %}
+                    <span class="fa fa-minus del" name="del-adjective"></span></div><br>
+                {% else %}
+                    <span class="fa fa-plus add" name="add-adjective"></span></div><br> 
+                {% endif %}
             {% endfor %}
-            <span class="fa fa-plus add" name="add-adjective"></span></div><br>            
         <div>Noun: 
             {% for noun in nouns %}
                 <br><input type="text" id="noun-{{ loop.index+1 }}" name="noun-{{ loop.index+1 }}" value="{{ noun }}" required/>
+                {% if not loop.last %}
+                    <span class="fa fa-minus del" name="del-noun"></span></div><br>
+                {% else %}
+                    <span class="fa fa-plus add" name="add-noun"></span></div><br> 
+                {% endif %}
             {% endfor %}
             <span class="fa fa-plus add" name="add-noun"></span></div><br>
         <div>Verb: 
             {% for verb in verbs %}
                 <br><input type="text" id="verb-{{ loop.index+1 }}" name="verb-{{ loop.index+1 }}" value="{{ verb }}" required/>
+                {% if not loop.last %}
+                    <span class="fa fa-minus del" name="del-verb"></span></div><br>
+                {% else %}
+                    <span class="fa fa-plus add" name="add-verb"></span></div><br> 
+                {% endif %}
             {% endfor %}
             <span class="fa fa-plus add" name="add-verb"></span></div><br>
         <div>Misc.: 
             {% for miscellany in miscellanies %}
                 <br><input type="text" id="miscellany={{ loop.index }}" name="miscellany-{{ loop.index }}" value="{{ miscellany }}" required/>
+                {% if not loop.last %}
+                    <span class="fa fa-minus del" name="del-miscellany"></span></div><br>
+                {% else %}
+                    <span class="fa fa-plus add" name="add-miscellany"></span></div><br> 
+                {% endif %}
             {% endfor %}
             <span class="fa fa-plus add"></span></div><br>
         <div><input type="submit" value="Submit"></div>

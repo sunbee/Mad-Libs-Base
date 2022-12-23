@@ -16,6 +16,8 @@ var del_el = function() {
   el_parent.removeChild(el_mysibbr)
 };
 
+$('.del').on('click', del_el)
+
 $('.add').on('click', function() {
     /*
     Get the following elements:
