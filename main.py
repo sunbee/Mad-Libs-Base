@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Path, Query, Form, Request, Depends
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Path, Query, Form, Request, Depends, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List, Union
 from fastapi.templating import Jinja2Templates
@@ -122,7 +122,7 @@ async def postFormData(madlib: MadLib = Depends(CRUDForm)):
     madlibsDB[madlib.title]['verbs']            = madlib.verbs
     madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
 
-    return madlibsDB[madlib.title]
+    return RedirectResponse('/madlibsgame/' + madlib.title, status_code=status.HTTP_302_FOUND)
 
 @app.get('/madlibschange/{name}')
 async def updateForm4CRUD(request: Request, name: str):
