@@ -147,4 +147,4 @@ async def putFormData(name: str, madlib: MadLib = Depends(CRUDForm)):
     madlibsDB[madlib.title]['verbs']            = madlib.verbs
     madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
 
-    return madlibsDB[madlib.title]
+    return RedirectResponse('/madlibsgame/' + madlib.title, status_code=status.HTTP_302_FOUND)
