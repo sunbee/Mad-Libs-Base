@@ -20,36 +20,36 @@
         <div>Adjective: 
             {% for adjective in adjectives %}
                 <br><input type="text" id="adjective-{{ loop.index+1 }}" name="adjective-{{ loop.index+1 }}"" value="{{ adjective }}" required/>
-                {% if loop.last %}
+                {%- if loop.last -%}
                     <span class="fa fa-plus add"></span></div><br>
-                {% else %}
+                {%- else -%}
                     <span class="fa fa-minus del"></span> 
                 {% endif %}
             {% endfor %}
         <div>Noun: 
             {% for noun in nouns %}
                 <br><input type="text" id="noun-{{ loop.index+1 }}" name="noun-{{ loop.index+1 }}" value="{{ noun }}" required/>
-                {% if loop.last %}
+                {%- if loop.last -%}
                     <span class="fa fa-plus add"></span></div><br>
-                {% else %}
+                {%- else -%}
                     <span class="fa fa-minus del"></span>  
                 {% endif %}
             {% endfor %}
         <div>Verb: 
             {% for verb in verbs %}
                 <br><input type="text" id="verb-{{ loop.index+1 }}" name="verb-{{ loop.index+1 }}" value="{{ verb }}" required/>
-                {% if loop.last %}
+                {%- if loop.last -%}
                     <span class="fa fa-plus add"></span></div><br>
-                {% else %}
+                {%- else -%}
                     <span class="fa fa-minus del"></span>
                 {% endif %}
             {% endfor %}
         <div>Misc.: 
             {% for miscellany in miscellanies %}
                 <br><input type="text" id="miscellany={{ loop.index }}" name="miscellany-{{ loop.index }}" value="{{ miscellany }}" required/>
-                {% if loop.last %}
+                {%- if loop.last -%}
                     <span class="fa fa-plus add"></span></div><br>
-                {% else %}
+                {%- else -%}
                     <span class="fa fa-minus del"></span>
                 {% endif %}
             {% endfor %}
