@@ -99,7 +99,7 @@ async def getMadLib(name: str, q: List[str] = Query(default=[])):
 @app.get('/madlibsgame/{name}')
 async def getMadLibGame(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None)
-    if my_mad_lib:
+    if my_mad_lib and my_mad_lib.get('active', True):
         return templates.TemplateResponse('madlib.html', {'request': request, 
                                         'my_mad_lib': my_mad_lib.get('HTML'),
                                         'adjectives': my_mad_lib.get('adjectives'),
@@ -127,7 +127,7 @@ async def postFormData(madlib: MadLib = Depends(CRUDForm)):
 @app.get('/madlibschange/{name}')
 async def updateForm4CRUD(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None) 
-    if my_mad_lib:
+    if my_mad_lib and my_mad_lib.get('active', True):
         return templates.TemplateResponse('CRUpdateD.html', {
             'request': request,
             'title': name,
@@ -148,3 +148,24 @@ async def putFormData(name: str, madlib: MadLib = Depends(CRUDForm)):
     madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
 
     return RedirectResponse('/madlibsgame/' + madlib.title, status_code=status.HTTP_302_FOUND)
+
+@app.get('/madlibsdelete/{name}')
+async def deleteForm4CRUD(request: Request, name: str):
+    my_mad_lib = madlibsDB.get(name, None)
+    if my_mad_lib and my_mad_lib.get('active', True):
+        return templates.TemplateResponse('CRUDelete.html', {
+            'request': request,
+            'title': name,
+            'HTML': my_mad_lib.get('HTML', None),
+            'adjectives': my_mad_lib.get('adjectives', None),
+            'nouns': my_mad_lib.get('nouns', None),
+            'verbs': my_mad_lib.get('verbs', None),
+            'miscellanies': my_mad_lib.get('miscellanies', None)
+        })
+
+@app.post('/madlibsdel/{name}')
+async def delRecord(name: str):
+    my_mad_lib = madlibsDB.get(name, None)
+    if my_mad_lib:
+        my_mad_lib['active'] = False
+    return my_mad_lib
