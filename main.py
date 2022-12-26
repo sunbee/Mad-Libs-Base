@@ -139,7 +139,7 @@ async def updateForm4CRUD(request: Request, name: str):
         })
      
 @app.post('/madlibsupdate/{name}')
-async def putFormData(name: str, madlib: MadLib = Depends(CRUDForm)):
+async def putFormData(madlib: MadLib = Depends(CRUDForm)):
     madlibsDB[madlib.title] = dict()
     madlibsDB[madlib.title]['HTML']             = madlib.HTML
     madlibsDB[madlib.title]['adjectives']       = madlib.adjectives
