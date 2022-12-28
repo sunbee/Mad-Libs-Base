@@ -1,3 +1,23 @@
+var del_el = function() {
+  /*
+  Get the following elements:
+  el_me: the span el with minus sign that triggered this callback
+  el_mysibin: the associated input el for deletion
+  el_mysibbr: the break el 
+  el_parent: he enclosing div tag for the input els in this group
+  */  
+  var el_me = event.target
+  var el_mysibin = el_me.previousElementSibling
+  var el_mysibbr = el_mysibin.previousElementSibling
+  var el_parent = el_me.parentNode
+  
+  el_parent.removeChild(el_me)
+  el_parent.removeChild(el_mysibin)
+  el_parent.removeChild(el_mysibbr)
+};
+
+$('.del').on('click', del_el)
+
 $('.add').on('click', function() {
     /*
     Get the following elements:
@@ -27,6 +47,9 @@ $('.add').on('click', function() {
     Create a new input el and set attributes including class, name and id. The name and id are from prev. step.
     */
     var el_br = document.createElement("br")
+    var el_span = document.createElement("span")
+    el_span.classList.add('fa', 'fa-minus', 'del')
+    el_span.addEventListener('click', del_el)
     var el_input = document.createElement("input")
     el_input.setAttribute('type', 'text')
     el_input.setAttribute('id', name_input)
@@ -37,9 +60,9 @@ $('.add').on('click', function() {
     Insert the new input el before the span el with the plus sign, including a break el for separation.
     */
     console.log(el_input)
+    el_me.before(el_span)
     el_me.before(el_br)
     el_me.before(el_input)
-    1;
   });
 
 $("textarea").each(function () {
