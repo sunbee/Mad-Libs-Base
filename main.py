@@ -79,8 +79,13 @@ madlibsDB['furry_scaly_pets']['verbs'] = ['smell', 'fetch', 'love', 'call', 'typ
 madlibsDB['furry_scaly_pets']['miscellanies'] = ['astronaut', 'cake', 'car', 'dragon', 'grapes', 'guitar', 'potion', 'robot', 'teapot']
 
 @app.get('/')
-async def root():
-    return HTMLResponse("<h2>Marvellous Mavericks Make Methodical Mad-Libs</h2>")
+async def root(request: Request):
+    games = {k:v.get('title') for k, v in madlibsDB.items() if v.get('active', True)}
+    print(games)
+    return templates.TemplateResponse('landing.html', {
+        "request": request,
+        "games": games        
+    })
 
 @app.get('/madlibs/{name}')
 async def getMadLib(name: str, q: List[str] = Query(default=[])):
