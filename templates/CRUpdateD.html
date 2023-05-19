@@ -11,12 +11,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     </head>
     <body>
-      <form action="http://localhost:8000/madlibsupdate/{{ title }}" method="POST">
+      <form action="http://localhost:8000/madlibsupdate/{{ name }}" method="POST">
         <div><h3>Mad-Lib Information</h3></div>
         <div>Time: <input type="time" id="timestamp" name="timestamp" /></div><br>
         <div>Date: <input type="date" id="datestamp" name="datestamp" /></div><br>
-        <div>Title: <br><input type="text" id="title" name="title" value={{ title }} disabled="disabled"/></div><br>
-        <div>Mad-Lib: <br><textarea placeholder="Type HTML here." id="madlib" name="madlib">{{ HTML|safe }}</textarea></div><br>
+        <div>Title: <br><input type="text" id="title-display-only" name="title-display-only" placeholder="{{ title }}" disabled="disabled"/></div><br>
+        <div><input type="hidden" id="title" name="title" value="{{ title }}" /></div>
+        <div>Mad-Lib: <br><textarea placeholder="Type HTML here." id="madlib" name="madlib">{{ HTML | safe }}</textarea></div><br>
         <div>Adjective: 
             {% for adjective in adjectives %}
                 <br><input type="text" id="adjective-{{ loop.index+1 }}" name="adjective-{{ loop.index+1 }}"" value="{{ adjective }}" required/>

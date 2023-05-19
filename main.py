@@ -17,26 +17,19 @@ class MadLib(BaseModel):
 
 app = FastAPI()
 
-async def CRUDForm(request: Request, name: Union[str, None] = None):
+async def CRUDForm(request: Request):
     form_data = await request.form()
     form_json = jsonable_encoder(form_data)
     
-    title = form_json["title"] if not name else name
-    mad_html = form_json["madlib"]
-
     all_keys = form_json.keys()
-    adjectives      = [form_json[adjective_key]     for adjective_key   in all_keys if re.match('^adjective',   adjective_key)]
-    nouns           = [form_json[noun_key]          for noun_key        in all_keys if re.match('^noun',        noun_key)]
-    verbs           = [form_json[verb_key]          for verb_key        in all_keys if re.match('^verb',        verb_key)]
-    miscellanies    = [form_json[miscellany_key]    for miscellany_key  in all_keys if re.match('^miscellany',  miscellany_key)]
     
     madlib = MadLib(
-        title = title,
-        HTML = mad_html,
-        adjectives = adjectives,
-        nouns = nouns,
-        verbs = verbs,
-        miscellanies = miscellanies
+        title = form_json["title"],
+        HTML = form_json["madlib"],
+        adjectives = [form_json[word_key] for word_key in all_keys if re.match('^adjective', word_key)],
+        nouns = [form_json[word_key] for word_key in all_keys if re.match('^noun', word_key)],
+        verbs = [form_json[word_key] for word_key in all_keys if re.match('^verb', word_key)],
+        miscellanies = [form_json[word_key] for word_key  in all_keys if re.match('^miscellany',  word_key)]
     )
 
     print(madlib)
@@ -106,13 +99,13 @@ async def getMadLibGame(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None)
     if my_mad_lib and my_mad_lib.get('active', True):
         return templates.TemplateResponse('madlib.html', {'request': request, 
-                                        'my_mad_lib': my_mad_lib.get('HTML'),
+                                        'HTML': my_mad_lib.get('HTML'),
                                         'adjectives': my_mad_lib.get('adjectives'),
                                         'nouns': my_mad_lib.get('nouns'),
                                         'verbs': my_mad_lib.get('verbs'),
                                         'miscellanies': my_mad_lib.get('miscellanies')})
 
-@app.get('/madlibsform/')
+@app.get('/madlibsadd/')
 async def getForm4CRUD():
     with open('templates/CreateRUD.html', 'r') as fd:
         CreateRUD_HTML = fd.read()
@@ -120,22 +113,20 @@ async def getForm4CRUD():
 
 @app.post('/madlibsadd/')
 async def postFormData(madlib: MadLib = Depends(CRUDForm)):
-    madlibsDB[madlib.title] = dict()
-    madlibsDB[madlib.title]['HTML']             = madlib.HTML
-    madlibsDB[madlib.title]['adjectives']       = madlib.adjectives
-    madlibsDB[madlib.title]['nouns']            = madlib.nouns
-    madlibsDB[madlib.title]['verbs']            = madlib.verbs
-    madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
+    mad_name = re.sub(r'\W+', '', madlib.title)
+    mad_name = re.sub(r'\s+', '_', mad_name)
+    madlibsDB[mad_name] = madlib.dict()
 
-    return RedirectResponse('/madlibsgame/' + madlib.title, status_code=status.HTTP_302_FOUND)
+    return RedirectResponse('/madlibsgame/' + mad_name, status_code=status.HTTP_302_FOUND)
 
-@app.get('/madlibschange/{name}')
+@app.get('/madlibsupdate/{name}')
 async def updateForm4CRUD(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None) 
     if my_mad_lib and my_mad_lib.get('active', True):
         return templates.TemplateResponse('CRUpdateD.html', {
             'request': request,
-            'title': name,
+            'name': name,
+            'title': my_mad_lib.get('title', None),
             'HTML': my_mad_lib.get('HTML', None),
             'adjectives': my_mad_lib.get('adjectives', None),
             'nouns': my_mad_lib.get('nouns', None),
@@ -144,15 +135,11 @@ async def updateForm4CRUD(request: Request, name: str):
         })
      
 @app.post('/madlibsupdate/{name}')
-async def putFormData(madlib: MadLib = Depends(CRUDForm)):
-    madlibsDB[madlib.title] = dict()
-    madlibsDB[madlib.title]['HTML']             = madlib.HTML
-    madlibsDB[madlib.title]['adjectives']       = madlib.adjectives
-    madlibsDB[madlib.title]['nouns']            = madlib.nouns
-    madlibsDB[madlib.title]['verbs']            = madlib.verbs
-    madlibsDB[madlib.title]['miscellanies']     = madlib.miscellanies
+async def putFormData(name: str, madlib: MadLib = Depends(CRUDForm)):
+    madlibsDB[name] = dict()
+    madlibsDB[name] = madlib.dict()
 
-    return RedirectResponse('/madlibsgame/' + madlib.title, status_code=status.HTTP_302_FOUND)
+    return RedirectResponse('/madlibsgame/' + name, status_code=status.HTTP_302_FOUND)
 
 @app.get('/madlibsdelete/{name}')
 async def deleteForm4CRUD(request: Request, name: str):
