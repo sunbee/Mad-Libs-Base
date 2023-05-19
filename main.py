@@ -99,11 +99,7 @@ async def getMadLibGame(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None)
     if my_mad_lib and my_mad_lib.get('active', True):
         return templates.TemplateResponse('madlib.html', {'request': request, 
-                                        'HTML': my_mad_lib.get('HTML'),
-                                        'adjectives': my_mad_lib.get('adjectives'),
-                                        'nouns': my_mad_lib.get('nouns'),
-                                        'verbs': my_mad_lib.get('verbs'),
-                                        'miscellanies': my_mad_lib.get('miscellanies')})
+                                        **my_mad_lib})
 
 @app.get('/madlibsadd/')
 async def getForm4CRUD():
