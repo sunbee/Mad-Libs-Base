@@ -19,8 +19,14 @@
         <div>Noun: <br><input type="text" id="noun-1" name="noun-1" required/><span class="fa fa-plus add" name="add-noun"></span></div><br>
         <div>Verb: <br><input type="text" id="verb-1" name="verb-1" required/><span class="fa fa-plus add" name="add-verb"></span></div><br>
         <div>Misc.: <br><input type="text" id="miscellany=1" name="miscellany-1" required/><span class="fa fa-plus add"></span></div><br>
-        <div><input type="submit" value="Submit"> <button onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        <div><input type="submit" value="Submit"/> <button onclick="goBack(event)"><i class="fas fa-arrow-left"></i> Back</button>
         </div>
-      </form>    
-      <script src="https://cdn.jsdelivr.net/gh/sunbee/Mad-Libs-Base@rev011/JS/CreateRUD.js"></script>
+      </form>
+      <script>
+        function goBack(event) {
+          event.preventDefault();
+          window.history.back();
+        }
+      </script>     
+      <script src="https://cdn.jsdelivr.net/gh/sunbee/Mad-Libs-Base/JS/CreateRUD.js"></script>
     </body>
