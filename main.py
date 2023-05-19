@@ -98,8 +98,7 @@ async def getMadLib(name: str, q: List[str] = Query(default=[])):
 async def getMadLibGame(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None)
     if my_mad_lib and my_mad_lib.get('active', True):
-        return templates.TemplateResponse('madlib.html', {'request': request, 
-                                        **my_mad_lib})
+        return templates.TemplateResponse('madlib.html', {'request': request, **my_mad_lib})
 
 @app.get('/madlibsadd/')
 async def getForm4CRUD():
@@ -122,12 +121,7 @@ async def updateForm4CRUD(request: Request, name: str):
         return templates.TemplateResponse('CRUpdateD.html', {
             'request': request,
             'name': name,
-            'title': my_mad_lib.get('title', None),
-            'HTML': my_mad_lib.get('HTML', None),
-            'adjectives': my_mad_lib.get('adjectives', None),
-            'nouns': my_mad_lib.get('nouns', None),
-            'verbs': my_mad_lib.get('verbs', None),
-            'miscellanies': my_mad_lib.get('miscellanies', None)
+            **my_mad_lib
         })
      
 @app.post('/madlibsupdate/{name}')
@@ -143,15 +137,11 @@ async def deleteForm4CRUD(request: Request, name: str):
     if my_mad_lib and my_mad_lib.get('active', True):
         return templates.TemplateResponse('CRUDelete.html', {
             'request': request,
-            'title': name,
-            'HTML': my_mad_lib.get('HTML', None),
-            'adjectives': my_mad_lib.get('adjectives', None),
-            'nouns': my_mad_lib.get('nouns', None),
-            'verbs': my_mad_lib.get('verbs', None),
-            'miscellanies': my_mad_lib.get('miscellanies', None)
+            'name': name,
+            **my_mad_lib
         })
 
-@app.post('/madlibsdel/{name}')
+@app.post('/madlibsdelete/{name}')
 async def delRecord(name: str):
     my_mad_lib = madlibsDB.get(name, None)
     if my_mad_lib:
