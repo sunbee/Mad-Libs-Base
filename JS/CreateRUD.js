@@ -71,3 +71,7 @@ $("textarea").each(function () {
   this.style.height = 0;
   this.style.height = (this.scrollHeight) + "px";
 });
+
+function goBack() {
+  window.history.back();
+}

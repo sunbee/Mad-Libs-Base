@@ -9,6 +9,17 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunbee/Mad-Libs-Base@rev010/CSS/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <style>
+            .floating-panel {
+              position: fixed;
+              bottom: 20px;
+              left: 20px;
+              background-color: #f1f1f1;
+              padding: 10px;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+        </style>
     </head>
     {% block page_madlib %}
     <div id="header"><div class="left"></div><div class="right"><h1 id="title">Marvellously Mirthful Mad-Libs from Mercurial Mavens</h1></div></div>
