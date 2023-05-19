@@ -104,10 +104,8 @@ async def getMadLibGame(request: Request, name: str):
             **my_mad_lib})
 
 @app.get('/madlibsadd/')
-async def getForm4CRUD():
-    with open('templates/CreateRUD.html', 'r') as fd:
-        CreateRUD_HTML = fd.read()
-    return HTMLResponse(CreateRUD_HTML);
+async def createForm4CRUD(request: Request):
+    return templates.TemplateResponse('CreateRUD.html', {'request': request});
 
 @app.post('/madlibsadd/')
 async def postFormData(madlib: MadLib = Depends(CRUDForm)):
