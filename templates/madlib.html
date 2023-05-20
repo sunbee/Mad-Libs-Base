@@ -22,7 +22,7 @@
             </h5>
             <h5 id="nouns" data-name="" style="display: none;">
                 {%- for noun in nouns -%}
-                    <span class="noun-words">{{ noun }}</span>
+                    <span class="noun-words">{{ noun | safe }}</span>
                     {%- if loop.index % 3 == 0 -%}
                         <br>
                     {% endif %}
@@ -38,7 +38,7 @@
             </h5>
             <h5 id="miscellanies" data-name="" style="display: none;">
                 {%- for miscellany in miscellanies -%}
-                    <span class="miscellany-words">{{ miscellany }}</span>
+                    <span class="miscellany-words">{{ miscellany | safe }}</span>
                     {%- if loop.index % 3 == 0 -%}
                         <br>
                     {% endif %}

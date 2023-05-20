@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path, Query, Form, Request, Depends, status
+from fastapi import FastAPI, Path, Query, Form, Request, Depends, status, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List, Union
@@ -16,6 +16,15 @@ class MadLib(BaseModel):
     miscellanies: List[str]
 
 app = FastAPI()
+
+@app.exception_handler(HTTPException)
+async def handle_http_exception(request: Request, exc: HTTPException):
+    htm =  templates.get_template('main_popup.html').render(request=request,
+        status_code=exc.status_code, 
+        display_text=exc.detail, 
+        icon='error',
+        flag_back_button='false')
+    return HTMLResponse(htm, status_code=exc.status_code)
 
 async def CRUDForm(request: Request):
     form_data = await request.form()
@@ -141,10 +150,21 @@ async def deleteForm4CRUD(request: Request, name: str):
             'name': name,
             **my_mad_lib
         })
+    else:
+        raise HTTPException(status_code=404, detail='Found No Match!')
+
 
 @app.post('/madlibsdelete/{name}')
-async def delRecord(name: str):
+async def delRecord(request: Request, name: str):
     my_mad_lib = madlibsDB.get(name, None)
-    if my_mad_lib:
+    if (my_mad_lib and my_mad_lib.get('active', True)):
         my_mad_lib['active'] = False
-    return my_mad_lib
+        htm =  templates.get_template('main_popup.html').render(request=request,
+               status_code='200 OK', 
+               display_text='Removed Record', 
+               icon='success',
+               flag_back_button='false')
+        print(htm)
+        return HTMLResponse(htm)
+    else:
+        raise HTTPException(status_code=404, detail='Found No Match!')

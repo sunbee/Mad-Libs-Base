@@ -1,0 +1,29 @@
+{# templates/main_popup.html #}
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    </head>
+    <body>
+        <script>
+            Swal.fire({
+                title: '{{ status_code }}',
+                text: '{{ display_text }}',
+                icon: '{{ icon }}',
+                showCancelButton: {{ flag_back_button }},
+                confirmButtonText: 'Home',
+                cancelButtonText: 'Back'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked the Confirm button 
+                    // Go Home
+                    window.location.href = '/';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // User clicked the Cancel button
+                    // Go Back
+                    window.history.back();
+                }
+                });
+        </script>
+    </body>
+</html>
